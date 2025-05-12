@@ -115,3 +115,38 @@ value_map = {
     6: 100, 7: 20, 8: 200, 9: 200, 10: 50,
     11: 20, 12: 5, 13: 100
 }
+
+# Initialize webcam (use DirectShow for faster access on Windows)
+print("Opening USB2.0 HD UVC WebCam...")
+cap = cv2.VideoCapture(0, cv2.CAP_DSHOW)
+cap.set(cv2.CAP_PROP_FRAME_WIDTH, resW)
+cap.set(cv2.CAP_PROP_FRAME_HEIGHT, resH)
+cap.set(cv2.CAP_PROP_BUFFERSIZE, 2)  # Increase buffer size
+
+# Check if camera opened successfully
+if not cap.isOpened():
+    print("Failed to open webcam. Trying other indices...")
+    for i in range(1, 5):
+        cap = cv2.VideoCapture(i)
+        cap.set(3, resW)
+        cap.set(4, resH)
+        if cap.isOpened():
+            print(f"Found camera at index {i}")
+            break
+    
+    if not cap.isOpened():
+        print("Could not open USB2.0 HD UVC WebCam. Please check connection.")
+        sys.exit(0)
+
+# Initialize tracking variables
+avg_frame_rate = 0
+frame_rate_buffer = []
+fps_avg_len = 50
+frame_count = 0
+
+# Detection retention variables
+denomination_last_seen = {}  # Dictionary to store {denomination: timestamp}
+active_denominations = {}    # Currently active denominations to display
+current_total = 0            # Current total value to display
+
+print("Starting detection with USB2.0 HD UVC WebCam...")
