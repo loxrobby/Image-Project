@@ -33,7 +33,7 @@ if not os.path.exists(model_path):
     sys.exit(0)
 
 # Display PyTorch version information
-print(f"PyTorch version: {torch._version_}")
+print(f"PyTorch version: {torch.__version__}")
 print(f"torchvision version: {torch.version.cuda if hasattr(torch.version, 'cuda') else 'N/A'}")
 
 # Check for CUDA availability with improved diagnostics
@@ -69,7 +69,7 @@ else:
 # Workaround: force CPU if torchvision NMS CUDA is not available
 if device == 'cuda':
     try:
-        from torchvision.ops import nms
+        from torchvision.ops import nms # Import NMS from torchvision Non-Maximum Suppression
         dummy_boxes = torch.rand(1, 4).cuda()
         dummy_scores = torch.rand(1).cuda()
         _ = nms(dummy_boxes, dummy_scores, 0.5)
@@ -146,16 +146,16 @@ frame_count = 0
 
 # Detection retention variables
 denomination_last_seen = {}  # Dictionary to store {denomination: timestamp}
-active_denominations = {}    # Currently active denominations to display
+active_denominations = {}    # Continues to track the note even if it disappears for a few frames, based on a timer.
 current_total = 0            # Current total value to display
 
-print("Starting detection with USB2.0 HD UVC WebCam...")
+print("Starting detection with USB2.0 HD UVC WebCam...")
 
 # Begin inference loop
 while True:
-    t_start = time.perf_counter()
-    current_time = time.time()  # Get current time for retention calculations
-    current_frame_denominations = {}  # Denominations detected in current frame
+    t_start = time.perf_counter() #This records a precise timestamp the start of the current video frame.
+    current_time = time.time()  # Get current time for retention calculations seconds since January 1, 1970
+    current_frame_denominations = {}  # Shows what was detected in each individual frame.
     
     # Grab frame from camera
     ret, frame = cap.read()
@@ -172,13 +172,14 @@ while True:
     # Process frames
     if frame_count % process_every_n_frames == 0:
         # Resize for inference (smaller = faster)
-        input_frame = cv2.resize(frame, inference_size, interpolation=cv2.INTER_LINEAR)
+        input_frame = cv2.resize(frame, inference_size, interpolation=cv2.INTER_LINEAR) #INTER_LINEAR is a good default for resizing real-world images.
         try:
             # Run inference on the selected device
             results = model(input_frame, verbose=False, conf=min_thresh, device=device)
             
             # Extract results
-            detections = results[0].boxes
+            detections = results[0].boxes #Each detection has coordinates, class index, and confidence.
+
             object_count = 0
 
             # Calculate scaling factors (width, height)
