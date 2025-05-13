@@ -97,11 +97,19 @@ custom_data/
 └── classes.txt     # List of class names
 ```
 
+The Egyptian Currency dataset used in this project is available on Roboflow Universe:
+[Egyptian Currency Dataset](https://universe.roboflow.com/banha-university-dxs4z/egyptian-currency-psnkr)
+
 ## Model Architecture
 
 The project uses the YOLO (You Only Look Once) architecture, specifically supporting YOLOv11s model. YOLO is a state-of-the-art real-time object detection system that is both fast and accurate.
 
 For more information on YOLOv11, please refer to the [official Ultralytics YOLOv11 documentation](https://docs.ultralytics.com/models/yolo11/).
+
+## Project Documentation
+
+Detailed documentation of our Currency Recognition System implementation is available in our project report:
+[Currency Recognition System Using YOLOv11s Documentation.pdf](https://drive.google.com/file/d/1LnPM2tlmLWvSfCkBDKIKPyyqpk2lSFvn/view?usp=sharing)
 
 ## Performance Optimization
 
@@ -146,8 +154,9 @@ The detection system includes several optimizations to improve performance:
 
 [MIT License](LICENSE) - Feel free to use this project for your applications.
 
+## Project Repository
 
-- **Project Repository**: [https://github.com/loxrobby/Image-Project](https://github.com/loxrobby/Image-Project)
+- **GitHub**: [https://github.com/loxrobby/Image-Project](https://github.com/loxrobby/Image-Project)
 
 ---
 
